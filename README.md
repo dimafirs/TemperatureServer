@@ -1,11 +1,11 @@
 # WeatherObserver
 
 ## Front run
-### npm install -g @angular/cli (install globally angular command-line interface)
-### cd front
-### ng serve --open
+> npm install -g @angular/cli (install globally angular command-line interface) <br>
+> cd front <br>
+> ng serve --open <br>
 
 ## Server run
-### cd server
-### mvn package 
-### java -jar target/weatherobserver-0.0.1-SNAPSHOT.jar
+> cd server <br>
+> mvn spring-boot:run <br>
+
