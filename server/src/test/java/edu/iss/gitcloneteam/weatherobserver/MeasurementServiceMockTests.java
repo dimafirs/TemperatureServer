@@ -3,6 +3,7 @@ package edu.iss.gitcloneteam.weatherobserver;
 import edu.iss.gitcloneteam.weatherobserver.dao.MeasurementDao;
 import edu.iss.gitcloneteam.weatherobserver.model.Measurement;
 import edu.iss.gitcloneteam.weatherobserver.services.MeasurementServiceImpl;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 
@@ -45,5 +49,28 @@ public class MeasurementServiceMockTests {
         assertTrue(actualMeasurement.getMeasurementTime().isEqual(measurementTimeCurrent));
     }
 
+    @Test
+    public void getAverageMeasurementForLast24HoursTest() {
+        List<Measurement> measurements = new ArrayList<>();
+        Random r = new Random();
+        int average_t = 0;
+        int average_p = 0;
+        for(int i=0; i<5; i++){
+            Measurement m = new Measurement();
+            m.setMeasurementTime(LocalDateTime.now());
+            m.setTemperature(Math.round(r.nextFloat()*25));
+            m.setPressure(Math.round(r.nextFloat()*20) + 760);
+            average_t+=m.getTemperature();
+            average_p+=m.getPressure();
+            measurements.add(m);
+        }
+        average_t/=5;
+        average_p/=5;
+        Mockito.when(measurementDaoMock.getMeasurementsForTimeInterval(24))
+                .thenReturn(measurements);
+        Measurement aver_m = measurementService.getAverageMeasurementForLast24Hours();
+        Assert.assertEquals(average_t, aver_m.getTemperature());
+        Assert.assertEquals(average_p, aver_m.getPressure());
+    }
 
 }
