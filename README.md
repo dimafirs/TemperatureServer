@@ -6,7 +6,9 @@
 > ng serve --open <br>
 
 ## Server run
-> cd server <br>
+> cd: server/src/main/resources <br>
+> git describe --abbrev=0 > git_version.txt <br>
+> cd ../../../ <br>
 > mvn spring-boot:run <br>
 
 ## Device run

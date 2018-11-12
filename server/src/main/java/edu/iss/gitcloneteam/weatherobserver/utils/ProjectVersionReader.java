@@ -12,12 +12,14 @@ public class ProjectVersionReader {
 
     public final static String DEFAULT_VERSION = "0.0.0-unspecified";
 
+    private String fileName = "classpath:/git_version.txt";
+
     public String readVersion() {
 
         BufferedReader bufferedReader;
         String currentVersion = null;
         try {
-            bufferedReader = new BufferedReader(new FileReader("classpath:/git_version.txt"));
+            bufferedReader = new BufferedReader(new FileReader(fileName));
             currentVersion = bufferedReader.readLine();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -28,4 +30,11 @@ public class ProjectVersionReader {
         return currentVersion;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }
