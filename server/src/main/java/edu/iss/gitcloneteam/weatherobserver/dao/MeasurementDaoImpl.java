@@ -35,7 +35,7 @@ public class MeasurementDaoImpl implements MeasurementDao {
     }
 
     @Override
-    public List<Measurement> getMeasurementForTimeInterval(int hours) {
+    public List<Measurement> getMeasurementsForTimeInterval(int hours) {
         String query = environment.getProperty("select.measurements.for.interval");
         RowMapper<Measurement> rowMapper = new BeanPropertyRowMapper<Measurement>(Measurement.class);
         List<Measurement> measurementsForTimeInterval = jdbcTemplate.query(query, rowMapper, hours);
