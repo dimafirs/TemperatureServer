@@ -16,7 +16,7 @@ matrix:
     - language: node_js
       node_js: stable
       install:
-        - npm install
+        - npm install -g npm@2
       before_install:
         - cd ./front/
       script:
