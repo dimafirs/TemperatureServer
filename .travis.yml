@@ -14,6 +14,7 @@ matrix:
       script:
         - mvn clean package
       before_script:
+        - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
         - cd ./server/
 
     - language: node_js
@@ -24,6 +25,3 @@ matrix:
         - cd ./front/
       script:
         - npm run build
-
-
-  
