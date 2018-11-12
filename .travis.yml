@@ -3,6 +3,9 @@ dist: trusty
 
 branches:
   only: master
+  
+services:
+    - mysql
 
 matrix:
   include:
