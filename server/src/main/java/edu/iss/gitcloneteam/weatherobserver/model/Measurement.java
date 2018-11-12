@@ -4,32 +4,32 @@ import java.time.LocalDateTime;
 
 public class Measurement {
 
-    private Integer id;
-    private Integer temperature;
-    private Integer pressure;
+    private int id;
+    private int temperature;
+    private int pressure;
     private LocalDateTime measurementTime;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getTemperature() {
+    public int getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(Integer temperature) {
+    public void setTemperature(int temperature) {
         this.temperature = temperature;
     }
 
-    public Integer getPressure() {
+    public int getPressure() {
         return pressure;
     }
 
-    public void setPressure(Integer pressure) {
+    public void setPressure(int pressure) {
         this.pressure = pressure;
     }
 
