@@ -5,7 +5,6 @@ import edu.iss.gitcloneteam.weatherobserver.model.Measurement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -38,6 +37,11 @@ public class MeasurementServiceImpl implements MeasurementService {
     @Override
     public Measurement getAverageMeasurementForLast24Hours() {
         List<Measurement> measurements = measurementDao.getMeasurementsForTimeInterval(24);
+        Measurement averageMeasurementForLast24Hours = countAverageMeasurement(measurements);
+        return averageMeasurementForLast24Hours;
+    }
+
+    private Measurement countAverageMeasurement(List<Measurement> measurements) {
         int temperatureSum = 0, pressureSum = 0;
         for (Measurement measurement : measurements) {
             temperatureSum += measurement.getTemperature();
