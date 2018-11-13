@@ -1,11 +1,17 @@
 # WeatherObserver
 
+Minimal software requirments is: <br>
+1. JDK 8.0_191; <br>
+2. Maven 3.60+; <br>
+3. MySQL 8.0.13; <br>
+
 ## Front run
 > npm install -g @angular/cli (install globally angular command-line interface) <br>
 > cd front <br>
 > ng serve --open <br>
 
 ## Server run
+Run this in command line:
 > cd: server/src/main/resources <br>
 > git describe --abbrev=0 > git_version.txt <br>
 > cd ../../../ <br>
