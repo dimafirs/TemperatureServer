@@ -13,6 +13,7 @@ import {EpicsService} from './services/epics.service';
 import thunkMiddleware from 'redux-thunk';
 import {createLogger} from 'redux-logger';
 import {AppRouting} from './app.routing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {AppRouting} from './app.routing';
     HttpClientModule,
     NgReduxModule,
     NgReduxRouterModule.forRoot(),
-    AppRouting
+    AppRouting,
+    BrowserAnimationsModule
   ],
   providers:
     [MeasurementService,

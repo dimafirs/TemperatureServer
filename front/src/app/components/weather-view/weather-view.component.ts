@@ -4,7 +4,7 @@ import {MeasurementService} from '../../services/measurement.service';
 @Component({
   selector: 'app-weather-view',
   templateUrl: './weather-view.component.html',
-  styleUrls: ['./weather-view.component.less']
+  styleUrls: ['../../../assets/components/weather-view.component.scss']
 })
 export class WeatherViewComponent implements OnInit {
 
