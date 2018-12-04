@@ -10,8 +10,8 @@ public class MeasurementRowMapper implements RowMapper<Measurement> {
     public Measurement mapRow(ResultSet resultSet, int i) throws SQLException {
         Measurement measurement = new Measurement();
         measurement.setId(resultSet.getInt("measurement_id"));
-        measurement.setId(resultSet.getInt("temperature"));
-        measurement.setId(resultSet.getInt("temperature"));
+        measurement.setTemperature(resultSet.getInt("temperature"));
+        measurement.setPressure(resultSet.getInt("pressure"));
         measurement.setMeasurementTime(resultSet.getTimestamp("measurement_time").toLocalDateTime());
         return measurement;
     }
