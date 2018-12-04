@@ -12,7 +12,7 @@ public class ProjectVersionReader {
 
     public final static String DEFAULT_VERSION = "0.0.0-unspecified";
 
-    private String fileName = "classpath:/git_version.txt";
+    private String fileName = "src/main/resources/git_version.txt";
 
     public String readVersion() {
 
