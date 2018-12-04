@@ -3,6 +3,7 @@ package edu.iss.gitcloneteam.weatherobserver.controllers;
 import edu.iss.gitcloneteam.weatherobserver.model.Measurement;
 import edu.iss.gitcloneteam.weatherobserver.services.MeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,12 +15,9 @@ import java.time.LocalDateTime;
 @RequestMapping("device/measurement/")
 public class MeasurementFromDeviceController {
 
-    private MeasurementService measurementService;
-
     @Autowired
-    public MeasurementFromDeviceController(MeasurementService measurementService) {
-        this.measurementService = measurementService;
-    }
+    @Qualifier("MeasurementServiceImpl")
+    private MeasurementService measurementService;
 
     @GetMapping("/new")
     public Integer addNewMeasurement(

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service("MeasurementServiceImpl")
 public class MeasurementServiceImpl implements MeasurementService {
 
     private MeasurementDao measurementDao;
@@ -24,14 +24,15 @@ public class MeasurementServiceImpl implements MeasurementService {
     }
 
     @Override
-    public void addMeasurement(Measurement measurement) {
-        measurementDao.addMeasurement(measurement);
+    public List<Measurement> getMeasurementsForTimeInterval(String timeUnit, int duration) {
+        // convert with timeUnit
+        List<Measurement> measurements = measurementDao.getMeasurementsForTimeInterval(duration);
+        return measurements;
     }
 
     @Override
-    public List<Measurement> getMeasurementsForTimeInterval(int hours) {
-        List<Measurement> measurements = measurementDao.getMeasurementsForTimeInterval(hours);
-        return measurements;
+    public void addMeasurement(Measurement measurement) {
+        measurementDao.addMeasurement(measurement);
     }
 
     @Override
