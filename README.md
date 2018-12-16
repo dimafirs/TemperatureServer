@@ -34,6 +34,6 @@ To check board logs use "Serial monitor" (Ctrl+Shift+M in Arduino IDE).<br>
 ## Docker
 Run commands below:
 > cd ./server <br>
- > sudo docker build -f docker/Dockerfile . -t weatherobserversudo <br>
- > sudo docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql <br>
+ > sudo docker build -f docker/Dockerfile . -t weatherobserver <br>
+ > sudo docker run --name mysql --network host -e MYSQL_ROOT_PASSWORD=root -d mysql <br>
  > sudo docker run --network host weatherobserver <br>
