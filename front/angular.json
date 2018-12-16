@@ -23,7 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/assets/base.scss"
             ],
             "scripts": []
           },
@@ -51,6 +51,14 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
+                }
+              ]
             }
           }
         },
@@ -62,6 +70,10 @@
           "configurations": {
             "production": {
               "browserTarget": "weatherobserver:build:production"
+            },
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "weatherobserver:build:hmr"
             }
           }
         },
@@ -79,7 +91,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "src/assets/base.scss"
             ],
             "scripts": [],
             "assets": [
@@ -131,5 +143,10 @@
       }
     }
   },
-  "defaultProject": "weatherobserver"
+  "defaultProject": "weatherobserver",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "less"
+    }
+  }
 }

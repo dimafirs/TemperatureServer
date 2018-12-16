@@ -8,7 +8,7 @@ import {MeasurementService} from '../../services/measurement.service';
 
 class MockMeasurementService {
   fetchMeasuremenrs(): Observable<Measurement[]> {
-    return of([{id: 0, temperature: 0, date: 0} as Measurement]);
+    return of([{id: 0, temperature: 0, measurementTime: null} as Measurement]);
   }
 }
 
@@ -17,7 +17,7 @@ describe('WeatherViewComponent', () => {
   let fixture: ComponentFixture<WeatherViewComponent>;
 
   const spyMeasurementServiceFetch = () => {
-    return of([{id: 0, temperature: 0, date: 0} as Measurement]);
+    return of([{id: 0, temperature: 0, measurementTime: null} as Measurement]);
   }
 
   beforeEach(async(() => {
