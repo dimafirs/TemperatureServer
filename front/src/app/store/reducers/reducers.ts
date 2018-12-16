@@ -1,7 +1,13 @@
 import {combineReducers, Reducer} from 'redux';
 import {AppState} from '../index';
 import { routerReducer } from '@angular-redux/router';
+import {currentViewReducer} from './current-view.reducer';
+import {measurementsReducer} from './measurements.reducer';
+import {metadataReducer} from './metadata.reducer';
 
 export const reducers: Reducer = combineReducers<AppState>({
-  router: routerReducer
+  route: routerReducer,
+  currentView: currentViewReducer,
+  measurements: measurementsReducer,
+  metadata: metadataReducer
 });

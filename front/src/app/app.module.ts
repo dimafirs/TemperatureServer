@@ -13,7 +13,9 @@ import {EpicsService} from './services/epics.service';
 import thunkMiddleware from 'redux-thunk';
 import {createLogger} from 'redux-logger';
 import {AppRouting} from './app.routing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {EpicsModule} from './store/epics/epics.module';
+import {MetadataService} from './services/metadata.service';
 
 @NgModule({
   declarations: [
@@ -25,11 +27,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NgReduxModule,
     NgReduxRouterModule.forRoot(),
     AppRouting,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    EpicsModule
   ],
   providers:
     [MeasurementService,
-    EpicsService],
+      MetadataService,
+      EpicsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
