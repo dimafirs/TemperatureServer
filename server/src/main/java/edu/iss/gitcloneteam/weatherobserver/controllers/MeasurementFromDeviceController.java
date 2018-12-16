@@ -5,10 +5,13 @@ import edu.iss.gitcloneteam.weatherobserver.services.MeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 @Controller
@@ -19,19 +22,19 @@ public class MeasurementFromDeviceController {
     @Qualifier("MeasurementServiceImpl")
     private MeasurementService measurementService;
 
-    @GetMapping("/new")
-    public Integer addNewMeasurement(
-            @RequestParam("temp") int temperature,
-            @RequestParam("pres") int pressure
+    @PostMapping("/new")
+    @ResponseBody
+    public String addNewMeasurement(
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse
             ) {
         Measurement measurement = new Measurement();
-        measurement.setTemperature(temperature);
-        measurement.setPressure(pressure);
-        // later device will sent this time
+        measurement.setTemperature(Integer.parseInt(httpServletRequest.getParameter("temperature")));
+        measurement.setPressure(Integer.parseInt(httpServletRequest.getParameter("pressure")));
         measurement.setMeasurementTime(LocalDateTime.now());
         measurementService.addMeasurement(measurement);
         // return successful result of saving
-        return 0;
+        return "{\"message\":measurement was successfully added}";
     }
 
 }
