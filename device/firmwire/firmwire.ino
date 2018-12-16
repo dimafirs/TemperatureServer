@@ -2,7 +2,7 @@
 #include <ESP8266WiFi.h>
 static const char *wlan_ssid = "helloBitch";
 static const char *wlan_pass = "lieBitch";
-static const char *serv_enp = "http://192.168.1.208:8080/device/measurement/new";
+static const char *serv_enp = "http://192.168.1.127:8080/device/measurement/new";
 void setup() {
  
   Serial.begin(115200);                 //Serial connection
@@ -19,11 +19,12 @@ void setup() {
 void loop() {
   HTTPClient http;
   http.begin(serv_enp);
-  http.addHeader("MEASURMENTS-FROM-BOARD", "text/plain");
-  int http_code = http.POST("temperature=-7; pressure=757");
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+  while(200 != http.POST("temperature=-7&pressure=757")){
+    delay(1000);
+  }
   String payload = http.getString();
   http.end();
-  Serial.printf("Sent POST request\n http_code=%d\n", http_code);
   Serial.println("Payload - " + payload);
   delay(60000);
 }
