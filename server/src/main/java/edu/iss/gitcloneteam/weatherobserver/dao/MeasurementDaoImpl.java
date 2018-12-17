@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -19,19 +20,30 @@ public class MeasurementDaoImpl implements MeasurementDao {
 
     private JdbcTemplate jdbcTemplate;
     private Environment environment;
+    private RetryTemplate retryTemplate;
 
     @Autowired
-    public MeasurementDaoImpl(JdbcTemplate jdbcTemplate, Environment environment) {
+    public MeasurementDaoImpl(JdbcTemplate jdbcTemplate, Environment environment, RetryTemplate retryTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.environment = environment;
+        this.retryTemplate = retryTemplate;
     }
 
     @Override
-    public Measurement getLastMeasurement() {
+    public Measurement getLastMeasurement() throws Exception {
         String query = environment.getProperty("select.measurement.last");
         RowMapper<Measurement> rowMapper = new MeasurementRowMapper();
-        Measurement lastMeasurement = jdbcTemplate.queryForObject(query, rowMapper);
-        return lastMeasurement;
+        final Measurement[] lastMeasurement = new Measurement[1];
+        retryTemplate.execute(arg0 -> {
+            System.out.println("Get last measurement try");
+            boolean b = true;
+            if (b) {
+                throw new Exception();
+            }
+            lastMeasurement[0] = jdbcTemplate.queryForObject(query, rowMapper);
+            return null;
+        });
+        return lastMeasurement[0];
     }
 
     @Override

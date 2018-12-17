@@ -37,7 +37,7 @@ public class MeasurementServiceMockTests {
     }
 
     @Test
-    public void getLastMeasurementTest() {
+    public void getLastMeasurementTest() throws Exception {
         LocalDateTime measurementTimeCurrent = LocalDateTime.now();
         Measurement lastMeasurement = new Measurement();
         lastMeasurement.setMeasurementTime(measurementTimeCurrent);
