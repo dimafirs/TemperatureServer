@@ -19,7 +19,12 @@ public class MeasurementServiceImpl implements MeasurementService {
 
     @Override
     public Measurement getLastMeasurement() {
-        Measurement lastMeasurement = measurementDao.getLastMeasurement();
+        Measurement lastMeasurement = null;
+        try {
+            lastMeasurement = measurementDao.getLastMeasurement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return lastMeasurement;
     }
 

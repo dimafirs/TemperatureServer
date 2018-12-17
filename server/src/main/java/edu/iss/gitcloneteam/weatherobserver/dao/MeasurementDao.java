@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MeasurementDao {
 
-    Measurement getLastMeasurement();
+    Measurement getLastMeasurement() throws Exception;
 
     List<Measurement> getMeasurementsForTimeInterval(int hours);
 
