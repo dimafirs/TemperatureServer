@@ -16,7 +16,7 @@ import java.util.List;
 public class MeasurementForUserController {
 
     @Autowired
-    @Qualifier("MeasurementServiceImpl")
+    @Qualifier("MeasurementServiceTestDataImpl")
     private MeasurementService measurementService;
 
     @GetMapping("/current")
