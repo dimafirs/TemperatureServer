@@ -7,7 +7,7 @@ import am4themes_dark from '@amcharts/amcharts4/themes/dark';
 import {NgRedux, select} from '@angular-redux/store';
 import {Measurement} from '../../../model/Measurement';
 import {Observable, Subscription} from 'rxjs';
-import {changeDurationAction, changeDurationThunk} from '../../../store/actions/current-view.actions';
+import {changeDurationThunk} from '../../../store/actions/current-view.actions';
 import {AppState} from '../../../store';
 
 am4core.useTheme(am4themes_dark);
@@ -25,12 +25,15 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @select(['currentView', 'duration'])
   duration: Duration;
   @select(['measurements', 'averageMeasurement'])
-  averageMeasurement: Measurement;
+  averageMeasurement$: Measurement;
   @select(['measurements', 'lastMeasurement'])
-  lastMeasurement: Measurement;
+  lastMeasurement$: Measurement;
   durations = DURATIONS;
+  chartTemperatureData: { time: Date, temperature: number }[] = [];
+  chartHumilityData: { time: Date, humility: number }[] = [];
 
-  private chart: am4charts.XYChart;
+  private temperatureChart: am4charts.XYChart;
+  private humilityChart: am4charts.XYChart;
 
   constructor(private zone: NgZone,
               private ngRedux: NgRedux<AppState>) {
@@ -39,24 +42,59 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.measurements$.subscribe(measurements => {
       this.measurements = measurements;
-    })
+      this.chartTemperatureData = [];
+      this.chartHumilityData = [];
+      measurements.forEach(measurement => {
+        this.chartTemperatureData.push({
+          time: measurement.measurementTime,
+          temperature: measurement.temperature
+        });
+        this.chartHumilityData.push({
+          time: measurement.measurementTime,
+          humility: measurement.humility
+        });
+      });
+      if (this.temperatureChart) {
+        this.temperatureChart.data = this.chartTemperatureData;
+      }
+      if (this.humilityChart) {
+        this.humilityChart.data = this.chartHumilityData;
+      }
+    });
   }
 
   ngAfterViewInit() {
+    this.createTemperatureChart();
+    this.createHumilityChart();
+  }
+
+  ngOnDestroy() {
     this.zone.runOutsideAngular(() => {
-      let chart = am4core.create('chartdiv', am4charts.XYChart);
+      if (this.temperatureChart) {
+        this.temperatureChart.dispose();
+      }
+    });
+    if (this.measurementsSubscription) {
+      this.measurementsSubscription.unsubscribe();
+    }
+  }
 
-      let data = [];
+  onSelectionChange(event) {
+    this.ngRedux.dispatch<any>(changeDurationThunk(event.value));
+  }
 
-      this.measurements.forEach(measurement => {
-        data.push({time: measurement.measurementTime, temperature: measurement.temperature})
-      });
+  createTemperatureChart(): void {
+    this.zone.runOutsideAngular(() => {
+      let chart = am4core.create('chart-temperature-div', am4charts.XYChart);
 
-      chart.data = data;
+      chart.data = this.chartTemperatureData;
 
 // Create axes
       let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-      // dateAxis.renderer.minGridDistance = 60;
+      dateAxis.renderer.minGridDistance = 60;
+      // dateAxis.baseInterval = {timeUnit: 'hour', count: 1};
+      dateAxis.dateFormatter = new am4core.DateFormatter();
+      dateAxis.dateFormatter.dateFormat = 'MM-dd HH:mm';
 
       let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
@@ -74,23 +112,41 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
       chart.scrollbarX = new am4core.Scrollbar();
 
 
-      this.chart = chart;
+      this.temperatureChart = chart;
     });
   }
 
-  ngOnDestroy() {
+  createHumilityChart(): void {
     this.zone.runOutsideAngular(() => {
-      if (this.chart) {
-        this.chart.dispose();
-      }
-    });
-    if (this.measurementsSubscription) {
-      this.measurementsSubscription.unsubscribe();
-    }
-  }
+      let chart = am4core.create('chart-humility-div', am4charts.XYChart);
 
-  onSelectionChange(event) {
-    this.ngRedux.dispatch<any>(changeDurationThunk(event.value));
+      chart.data = this.chartHumilityData;
+
+// Create axes
+      let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.renderer.minGridDistance = 60;
+      // dateAxis.baseInterval = {timeUnit: 'hour', count: 1};
+      dateAxis.dateFormatter = new am4core.DateFormatter();
+      dateAxis.dateFormatter.dateFormat = 'MM-dd HH:mm';
+
+      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+// Create series
+      let series = chart.series.push(new am4charts.LineSeries());
+      series.dataFields.valueY = 'humility';
+      series.dataFields.dateX = 'time';
+      series.tooltipText = '{humility}';
+
+      series.tooltip.pointerOrientation = 'vertical';
+
+      chart.cursor = new am4charts.XYCursor();
+
+//chart.scrollbarY = new am4core.Scrollbar();
+      chart.scrollbarX = new am4core.Scrollbar();
+
+
+      this.humilityChart = chart;
+    });
   }
 
 }

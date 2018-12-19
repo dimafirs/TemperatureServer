@@ -20,7 +20,7 @@ export class TableViewComponent implements OnInit {
   averageMeasurement$: Measurement;
   @select(['measurements', 'lastMeasurement'])
   lastMeasurement$: Measurement;
-  columnsToDisplay = ['date', 'temperature', 'pressure'];
+  columnsToDisplay = ['date', 'temperature', 'humility'];
   durations = DURATIONS;
 
   constructor(private ngRedux: NgRedux<AppState>) { }
