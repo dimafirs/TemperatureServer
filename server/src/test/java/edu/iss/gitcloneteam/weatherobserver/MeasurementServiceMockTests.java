@@ -59,9 +59,9 @@ public class MeasurementServiceMockTests {
             Measurement m = new Measurement();
             m.setMeasurementTime(LocalDateTime.now());
             m.setTemperature(Math.round(r.nextFloat()*25));
-            m.setPressure(Math.round(r.nextFloat()*20) + 760);
+            m.setHumidity(Math.round(r.nextFloat()*20) + 760);
             average_t+=m.getTemperature();
-            average_p+=m.getPressure();
+            average_p+=m.getHumidity();
             measurements.add(m);
         }
         average_t/=5;
@@ -70,7 +70,7 @@ public class MeasurementServiceMockTests {
                 .thenReturn(measurements);
         Measurement aver_m = measurementService.getAverageMeasurementForLast24Hours();
         Assert.assertEquals(average_t, aver_m.getTemperature());
-        Assert.assertEquals(average_p, aver_m.getPressure());
+        Assert.assertEquals(average_p, aver_m.getHumidity());
     }
 
 }

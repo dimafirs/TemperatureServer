@@ -6,7 +6,7 @@ public class Measurement {
 
     private int id;
     private int temperature;
-    private int pressure;
+    private int humidity;
     private LocalDateTime measurementTime;
 
     public int getId() {
@@ -25,12 +25,12 @@ public class Measurement {
         this.temperature = temperature;
     }
 
-    public int getPressure() {
-        return pressure;
+    public int getHumidity() {
+        return humidity;
     }
 
-    public void setPressure(int pressure) {
-        this.pressure = pressure;
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
     }
 
     public LocalDateTime getMeasurementTime() {

@@ -48,16 +48,16 @@ public class MeasurementServiceImpl implements MeasurementService {
     }
 
     private Measurement countAverageMeasurement(List<Measurement> measurements) {
-        int temperatureSum = 0, pressureSum = 0;
+        int temperatureSum = 0, humiditySum = 0;
         for (Measurement measurement : measurements) {
             temperatureSum += measurement.getTemperature();
-            pressureSum += measurement.getPressure();
+            humiditySum += measurement.getHumidity();
         }
         int temperatureAverage = temperatureSum / measurements.size();
-        int pressureAverage = pressureSum / measurements.size();
+        int humidityAverage = humiditySum / measurements.size();
         Measurement measurement = new Measurement();
         measurement.setTemperature(temperatureAverage);
-        measurement.setPressure(pressureAverage);
+        measurement.setHumidity(humidityAverage);
         return measurement;
     }
 }
