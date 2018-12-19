@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +29,7 @@ public class MeasurementFromDeviceController {
             ) {
         Measurement measurement = new Measurement();
         measurement.setTemperature(Integer.parseInt(httpServletRequest.getParameter("temperature")));
-        measurement.setPressure(Integer.parseInt(httpServletRequest.getParameter("pressure")));
+        measurement.setHumidity(Integer.parseInt(httpServletRequest.getParameter("humidity")));
         measurement.setMeasurementTime(LocalDateTime.now());
         measurementService.addMeasurement(measurement);
         // return successful result of saving

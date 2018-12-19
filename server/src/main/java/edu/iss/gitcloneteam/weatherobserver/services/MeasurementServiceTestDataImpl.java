@@ -17,15 +17,15 @@ public class MeasurementServiceTestDataImpl implements MeasurementService {
     Random random = new Random();
     final int TEMP_MAX = 50;
     final int TEMP_MIN = -50;
-    final int PRES_MAX = 780;
-    final int PRES_MIN = 730;
+    final int HUMID_MAX = 100;
+    final int HUMID_MIN = 0;
 
     @Override
     public Measurement getLastMeasurement() {
         Measurement measurement = new Measurement();
         measurement.setId(1);
         measurement.setTemperature(getRandomTemperature());
-        measurement.setPressure(getRandomPressure());
+        measurement.setHumidity(getRandomHumidity());
         measurement.setMeasurementTime(LocalDateTime.now());
         return measurement;
     }
@@ -49,7 +49,7 @@ public class MeasurementServiceTestDataImpl implements MeasurementService {
             Measurement measurement = new Measurement();
             measurement.setId(i);
             measurement.setTemperature(getRandomTemperature());
-            measurement.setPressure(getRandomPressure());
+            measurement.setHumidity(getRandomHumidity());
             switch (timeUnit) {
                 case HOUR:
                     measurement.setMeasurementTime(firstTime.plusHours(i));
@@ -69,7 +69,7 @@ public class MeasurementServiceTestDataImpl implements MeasurementService {
         Measurement measurement = new Measurement();
         measurement.setId(1);
         measurement.setTemperature(getRandomTemperature());
-        measurement.setPressure(getRandomPressure());
+        measurement.setHumidity(getRandomHumidity());
         return measurement;
     }
 
@@ -82,8 +82,8 @@ public class MeasurementServiceTestDataImpl implements MeasurementService {
         return TEMP_MIN + random.nextInt(Math.abs(TEMP_MIN) + Math.abs(TEMP_MAX));
     }
 
-    private int getRandomPressure() {
-        return PRES_MIN + random.nextInt(PRES_MAX - PRES_MIN);
+    private int getRandomHumidity() {
+        return HUMID_MIN + random.nextInt(HUMID_MAX - HUMID_MIN);
     }
 
     public TimeUnit getTimeUnit() {

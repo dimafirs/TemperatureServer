@@ -60,7 +60,7 @@ public class MeasurementDaoImpl implements MeasurementDao {
         jdbcTemplate.update(
                 query,
                 measurement.getTemperature(),
-                measurement.getPressure(),
+                measurement.getHumidity(),
                 Timestamp.valueOf(measurement.getMeasurementTime())
         );
     }

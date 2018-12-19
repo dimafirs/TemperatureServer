@@ -11,7 +11,7 @@ public class MeasurementRowMapper implements RowMapper<Measurement> {
         Measurement measurement = new Measurement();
         measurement.setId(resultSet.getInt("measurement_id"));
         measurement.setTemperature(resultSet.getInt("temperature"));
-        measurement.setPressure(resultSet.getInt("pressure"));
+        measurement.setHumidity(resultSet.getInt("humidity"));
         measurement.setMeasurementTime(resultSet.getTimestamp("measurement_time").toLocalDateTime());
         return measurement;
     }
