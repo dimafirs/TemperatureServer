@@ -8,7 +8,7 @@ public interface MeasurementService {
 
     Measurement getLastMeasurement();
 
-    List<Measurement> getMeasurementsForTimeInterval(int hours);
+    List<Measurement> getMeasurementsForTimeInterval(String timeUnit, int value);
 
     Measurement getAverageMeasurementForLast24Hours();
 
