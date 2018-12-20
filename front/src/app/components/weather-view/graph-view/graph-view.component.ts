@@ -23,17 +23,17 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
   measurements: Measurement[];
   measurementsSubscription: Subscription;
   @select(['currentView', 'duration'])
-  duration: Duration;
+  duration$: Observable<Duration>;
   @select(['measurements', 'averageMeasurement'])
-  averageMeasurement$: Measurement;
+  averageMeasurement$: Observable<Measurement>;
   @select(['measurements', 'lastMeasurement'])
-  lastMeasurement$: Measurement;
+  lastMeasurement$: Observable<Measurement>;
   durations = DURATIONS;
   chartTemperatureData: { time: Date, temperature: number }[] = [];
-  chartHumilityData: { time: Date, humility: number }[] = [];
+  chartHumidityData: { time: Date, humidity: number }[] = [];
 
   private temperatureChart: am4charts.XYChart;
-  private humilityChart: am4charts.XYChart;
+  private humidityChart: am4charts.XYChart;
 
   constructor(private zone: NgZone,
               private ngRedux: NgRedux<AppState>) {
@@ -43,29 +43,29 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.measurements$.subscribe(measurements => {
       this.measurements = measurements;
       this.chartTemperatureData = [];
-      this.chartHumilityData = [];
+      this.chartHumidityData = [];
       measurements.forEach(measurement => {
         this.chartTemperatureData.push({
           time: measurement.measurementTime,
           temperature: measurement.temperature
         });
-        this.chartHumilityData.push({
+        this.chartHumidityData.push({
           time: measurement.measurementTime,
-          humility: measurement.humility
+          humidity: measurement.humidity
         });
       });
       if (this.temperatureChart) {
         this.temperatureChart.data = this.chartTemperatureData;
       }
-      if (this.humilityChart) {
-        this.humilityChart.data = this.chartHumilityData;
+      if (this.humidityChart) {
+        this.humidityChart.data = this.chartHumidityData;
       }
     });
   }
 
   ngAfterViewInit() {
     this.createTemperatureChart();
-    this.createHumilityChart();
+    this.createHumidityChart();
   }
 
   ngOnDestroy() {
@@ -91,10 +91,11 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
 // Create axes
       let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-      dateAxis.renderer.minGridDistance = 60;
+      dateAxis.renderer.minGridDistance = 100;
       // dateAxis.baseInterval = {timeUnit: 'hour', count: 1};
-      dateAxis.dateFormatter = new am4core.DateFormatter();
-      dateAxis.dateFormatter.dateFormat = 'MM-dd HH:mm';
+      dateAxis.baseInterval = {timeUnit: 'minute', count: 1};
+      dateAxis.dateFormats.setKey('day', 'dd/MM');
+      dateAxis.dateFormats.setKey('hour', 'HH:mm \n dd/MM');
 
       let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
@@ -116,26 +117,29 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  createHumilityChart(): void {
+  createHumidityChart(): void {
     this.zone.runOutsideAngular(() => {
-      let chart = am4core.create('chart-humility-div', am4charts.XYChart);
+      let chart = am4core.create('chart-humidity-div', am4charts.XYChart);
 
-      chart.data = this.chartHumilityData;
+      chart.data = this.chartHumidityData;
 
 // Create axes
       let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-      dateAxis.renderer.minGridDistance = 60;
-      // dateAxis.baseInterval = {timeUnit: 'hour', count: 1};
-      dateAxis.dateFormatter = new am4core.DateFormatter();
-      dateAxis.dateFormatter.dateFormat = 'MM-dd HH:mm';
-
+      dateAxis.renderer.minGridDistance = 100;
+      dateAxis.baseInterval = {timeUnit: 'minute', count: 1};
+      // dateAxis.dateFormatter = new am4core.DateFormatter();
+      dateAxis.dateFormats.setKey('day', 'dd/MM');
+      dateAxis.dateFormats.setKey('hour', 'HH:mm \n dd/MM');
+      // dateAxis.dateFormats.setKey('hour', 'dd-MM HH:mm');
+      // dateAxis.dateFormats.setKey('minute', 'MM-dd HH:mm');
+      // dateAxis.dateFormats.setKey('second', 'MM-dd HH:mm');
       let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
 // Create series
       let series = chart.series.push(new am4charts.LineSeries());
-      series.dataFields.valueY = 'humility';
+      series.dataFields.valueY = 'humidity';
       series.dataFields.dateX = 'time';
-      series.tooltipText = '{humility}';
+      series.tooltipText = '{humidity}';
 
       series.tooltip.pointerOrientation = 'vertical';
 
@@ -145,7 +149,7 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
       chart.scrollbarX = new am4core.Scrollbar();
 
 
-      this.humilityChart = chart;
+      this.humidityChart = chart;
     });
   }
 

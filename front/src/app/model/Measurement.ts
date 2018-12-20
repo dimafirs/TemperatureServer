@@ -1,6 +1,6 @@
 export interface Measurement {
   readonly id: number;
   readonly temperature: number;
-  readonly humility?: number;
+  readonly humidity?: number;
   readonly measurementTime: Date;
 }
