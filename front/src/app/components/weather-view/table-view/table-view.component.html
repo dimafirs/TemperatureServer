@@ -1,13 +1,17 @@
 <div class="table__header">
   <mat-form-field>
-    <mat-select placeholder="duration" (selectionChange)="onSelectionChange($event)">
+    <mat-select placeholder="duration" (selectionChange)="onSelectionChange($event)" [value]="duration$ | async">
       <mat-option *ngFor="let duration of durations" [value]="duration">
         {{duration.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <p>Day Average: <span>{{averageMeasurement$ | async}}</span></p>
-  <p>Last Measurement: <span>{{lastMeasurement$ | async}}</span></p>
+  <p>Day Average:
+    <span>{{(averageMeasurement$ | async)?.temperature}}°C {{(averageMeasurement$ | async)?.humidity}}%</span>
+  </p>
+  <p>Last Measurement:
+    <span>{{(lastMeasurement$ | async)?.temperature}}°C  {{(lastMeasurement$ | async)?.humidity}}%</span>
+  </p>
 </div>
 <div class="table__body">
   <table mat-table [dataSource]="measurements$ | async">
@@ -19,9 +23,9 @@
       <th mat-header-cell *matHeaderCellDef> Temperature</th>
       <td mat-cell *matCellDef="let measurement"> {{measurement.temperature}}</td>
     </ng-container>
-    <ng-container matColumnDef="pressure">
-      <th mat-header-cell *matHeaderCellDef> Pressure</th>
-      <td mat-cell *matCellDef="let measurement"> {{measurement.pressure}}</td>
+    <ng-container matColumnDef="humidity">
+      <th mat-header-cell *matHeaderCellDef> Humidity</th>
+      <td mat-cell *matCellDef="let measurement"> {{measurement.humidity}}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>

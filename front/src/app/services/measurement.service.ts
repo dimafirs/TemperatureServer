@@ -3,7 +3,7 @@ import {Observable, throwError} from 'rxjs';
 import {Measurement} from '../model/Measurement';
 import {HttpClient} from '@angular/common/http';
 import {Duration} from '../model/duration';
-import {catchError} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 
 @Injectable()
 export class MeasurementService {
@@ -25,7 +25,9 @@ export class MeasurementService {
         duration: duration.value.toString(),
         unit: 'h'
       }
-    }).pipe(catchError(error => throwError(error)));
+    }).pipe(
+      map(measurements => measurements.map(measurement => ({...measurement, measurementTime: new Date(measurement.measurementTime)}))),
+      catchError(error => throwError(error)));
   }
 
   getLastMeasurement(): Observable<Measurement> {

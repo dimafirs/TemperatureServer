@@ -1,5 +1,5 @@
 import {Reducer} from 'redux';
-import {Duration} from '../../model/duration';
+import {Duration, DURATIONS} from '../../model/duration';
 import {CHANGE_DURATION} from '../actions/current-view.actions';
 
 export interface CurrentViewState {
@@ -7,7 +7,7 @@ export interface CurrentViewState {
 }
 
 export const INITIAL_STATE: CurrentViewState = {
-  duration: {value: 12, name: '12 hours'} as Duration
+  duration: DURATIONS[2]
 };
 
 export const currentViewReducer: Reducer<CurrentViewState> = (state: CurrentViewState = INITIAL_STATE, action): CurrentViewState => {

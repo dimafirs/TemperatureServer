@@ -1,14 +1,25 @@
-<div class="graph__header">
-  <mat-form-field>
-    <mat-select placeholder="Duration" (selectionChange)="onSelectionChange($event)">
-      <mat-option *ngFor="let duration of durations" [value]="duration">
-        {{duration.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <p>Day Average: <span>{{averageMeasurement$ | async}}</span></p>
-  <p>Last Measurement: <span>{{lastMeasurement$ | async}}</span></p>
-</div>
-<div class="graph__body">
-  <div id="chartdiv" style="width: 100%; height: 500px"></div>
+<div class="graphs">
+  <div class="graphs__header">
+    <mat-form-field>
+      <mat-select placeholder="Duration" (selectionChange)="onSelectionChange($event)" [value]="duration$ | async">
+        <mat-option *ngFor="let duration of durations" [value]="duration">
+          {{duration.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>Day Average:
+      <span>{{(averageMeasurement$ | async)?.temperature}}°C {{(averageMeasurement$ | async)?.humidity}}%</span>
+    </p>
+    <p>Last Measurement:
+      <span>{{(lastMeasurement$ | async)?.temperature}}°C  {{(lastMeasurement$ | async)?.humidity}}%</span>
+    </p>
+  </div>
+  <div class="graphs__body mat-app-background">
+    <div class="graph-wrapper temperature-graph">
+      <div id="chart-temperature-div" style="width: 100%; height: 500px"></div>
+    </div>
+    <div class="graph-wrapper humidity-graph">
+      <div id="chart-humidity-div" style="width: 100%; height: 500px"></div>
+    </div>
+  </div>
 </div>
