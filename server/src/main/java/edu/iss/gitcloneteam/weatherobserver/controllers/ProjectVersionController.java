@@ -23,7 +23,7 @@ public class ProjectVersionController {
         if (currentVersion == null) {
             currentVersion = ProjectVersionReader.DEFAULT_VERSION;
         }
-        return currentVersion;
+        return "{\"version\":\"" + currentVersion + "\"}";
     }
 
 }

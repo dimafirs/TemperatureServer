@@ -1,5 +1,5 @@
-DROP SCHEMA IF EXISTS weather_observer;
-DROP TABLE IF EXISTS weather_observer.measurement;
+-- DROP SCHEMA IF EXISTS weather_observer;
+-- DROP TABLE IF EXISTS weather_observer.measurement;
 
 CREATE SCHEMA IF NOT EXISTS weather_observer;
 

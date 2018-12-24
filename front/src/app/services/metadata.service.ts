@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
+import {Version} from '../model/version';
 
 @Injectable()
 export class MetadataService {
@@ -10,8 +11,8 @@ export class MetadataService {
   constructor(private http: HttpClient) {
   }
 
-  getCurrentVersion(): Observable<string> {
-    return this.http.get<string>(this.CURRENT_VERSION_URL).pipe(
+  getCurrentVersion(): Observable<Version> {
+    return this.http.get<Version>(this.CURRENT_VERSION_URL).pipe(
       catchError(error => throwError(error))
     );
   }

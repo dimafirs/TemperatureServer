@@ -13,12 +13,14 @@ export class MetadataEpic {
 
   getVersion$ = (action$: ActionsObservable<AnyAction>) => {
     return action$.ofType(GET_CURRENT_VERSION).pipe(
-      switchMap(({payload}) => {
+      switchMap(() => {
         return this.metadataService
           .getCurrentVersion()
           .pipe(
-            mergeMap(version => of(getCurrentVersionSuccessAction(version))),
-            catchError(error => of(getCurrentVersionFailureAction()))
+            mergeMap(version => of(getCurrentVersionSuccessAction(version.version))),
+            catchError(error => {
+				console.log(error);
+			return of(getCurrentVersionFailureAction());})
           );
       })
     );
