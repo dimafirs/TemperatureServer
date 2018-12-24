@@ -12,10 +12,15 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 @SpringBootApplication
-public class WeatherobserverApplication {
+public class WeatherobserverApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WeatherobserverApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+
 	}
 
 	@Bean
