@@ -24,3 +24,24 @@ p {
 table {
   width: 100%;
 }
+
+.average-current-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-tab-label-content {
+  @extend .mat-h2;
+  @extend .mat-title;
+}
+
+th.mat-header-cell {
+  @extend .mat-h2;
+  @extend .mat-title;
+}
+
+.mat-option-text {
+  @extend .mat-h2;
+  @extend .mat-title;
+}
+
