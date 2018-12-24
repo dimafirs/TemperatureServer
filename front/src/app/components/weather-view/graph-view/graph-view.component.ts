@@ -96,9 +96,10 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
       dateAxis.baseInterval = {timeUnit: 'minute', count: 1};
       dateAxis.dateFormats.setKey('day', 'dd/MM');
       dateAxis.dateFormats.setKey('hour', 'HH:mm \n dd/MM');
+      dateAxis.title.text = 'Date';
 
       let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
+      valueAxis.title.text = 'Temperature';
 // Create series
       let series = chart.series.push(new am4charts.LineSeries());
       series.dataFields.valueY = 'temperature';
@@ -130,11 +131,13 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
       // dateAxis.dateFormatter = new am4core.DateFormatter();
       dateAxis.dateFormats.setKey('day', 'dd/MM');
       dateAxis.dateFormats.setKey('hour', 'HH:mm \n dd/MM');
+      dateAxis.title.text = 'Date';
+
       // dateAxis.dateFormats.setKey('hour', 'dd-MM HH:mm');
       // dateAxis.dateFormats.setKey('minute', 'MM-dd HH:mm');
       // dateAxis.dateFormats.setKey('second', 'MM-dd HH:mm');
       let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
+      valueAxis.title.text = 'Humidity';
 // Create series
       let series = chart.series.push(new am4charts.LineSeries());
       series.dataFields.valueY = 'humidity';

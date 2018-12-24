@@ -146,7 +146,7 @@
   "defaultProject": "weatherobserver",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "less"
+      "styleext": "sass"
     }
   }
 }

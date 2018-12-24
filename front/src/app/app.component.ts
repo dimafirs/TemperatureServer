@@ -1,4 +1,5 @@
 import {Component, HostBinding} from '@angular/core';
+import { select } from '@angular-redux/store';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,6 @@ import {Component, HostBinding} from '@angular/core';
 })
 export class AppComponent {
   @HostBinding('class') classes = 'application mat-app-background';
-  title = 'weatherobserver';
+  @select(['metadata', 'currentVersion'])
+  currentVersion: string;
 }
