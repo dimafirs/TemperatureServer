@@ -4,7 +4,7 @@ import {Duration, DURATIONS} from '../../../model/duration';
 import {NgRedux, select} from '@angular-redux/store';
 import {AppState} from '../../../store';
 import {Observable} from 'rxjs';
-import {changeDurationAction, changeDurationThunk} from '../../../store/actions/current-view.actions';
+import {changeDurationThunk} from '../../../store/actions/current-view.actions';
 
 @Component({
   selector: 'app-table-view',

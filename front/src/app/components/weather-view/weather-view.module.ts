@@ -8,6 +8,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {GraphViewComponent} from './graph-view/graph-view.component';
+import { MatSortModule } from '@angular/material';
 
 @NgModule({
   declarations: [WeatherViewComponent, TableViewComponent, GraphViewComponent],
@@ -18,6 +19,7 @@ import {GraphViewComponent} from './graph-view/graph-view.component';
     MatTableModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatSortModule
   ]
 })
 export class WeatherViewModule { }
