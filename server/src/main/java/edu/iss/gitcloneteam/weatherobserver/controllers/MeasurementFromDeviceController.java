@@ -27,6 +27,10 @@ public class MeasurementFromDeviceController {
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
             ) {
+        String checkHeader = httpServletRequest.getParameter("header");
+        if (!"c9bc6960efe4f".equals(checkHeader)) {
+            return "{\"message\":no}";
+        }
         Measurement measurement = new Measurement();
         measurement.setTemperature(Integer.parseInt(httpServletRequest.getParameter("temperature")));
         measurement.setHumidity(Integer.parseInt(httpServletRequest.getParameter("humidity")));
