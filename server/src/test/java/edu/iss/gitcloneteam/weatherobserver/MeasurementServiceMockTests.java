@@ -51,26 +51,27 @@ public class MeasurementServiceMockTests {
 
     @Test
     public void getAverageMeasurementForLast24HoursTest() {
-        List<Measurement> measurements = new ArrayList<>();
-        Random r = new Random();
-        int average_t = 0;
-        int average_p = 0;
-        for(int i=0; i<5; i++){
-            Measurement m = new Measurement();
-            m.setMeasurementTime(LocalDateTime.now());
-            m.setTemperature(Math.round(r.nextFloat()*25));
-            m.setHumidity(Math.round(r.nextFloat()*20) + 760);
-            average_t+=m.getTemperature();
-            average_p+=m.getHumidity();
-            measurements.add(m);
+        for (int j = 0; j < 100000; j++) {
+            List<Measurement> measurements = new ArrayList<>();
+            Random r = new Random();
+            int average_t = 0;
+            int average_h = 0;
+            for (int i = 0; i < 5; i++) {
+                Measurement m = new Measurement();
+                m.setMeasurementTime(LocalDateTime.now());
+                m.setTemperature(Math.round(r.nextFloat() * 25));
+                m.setHumidity(Math.round(r.nextFloat() * 100));
+                average_t += m.getTemperature();
+                average_h += m.getHumidity();
+                measurements.add(m);
+            }
+            average_t = (int) Math.round((double) average_t / 5);
+            average_h = (int) Math.round((double) average_h / 5);
+            Mockito.when(measurementDaoMock.getMeasurementsForTimeInterval(24))
+                    .thenReturn(measurements);
+            Measurement aver_m = measurementService.getAverageMeasurementForLast24Hours();
+            Assert.assertEquals(average_t, aver_m.getTemperature());
+            Assert.assertEquals(average_h, aver_m.getHumidity());
         }
-        average_t/=5;
-        average_p/=5;
-        Mockito.when(measurementDaoMock.getMeasurementsForTimeInterval(24))
-                .thenReturn(measurements);
-        Measurement aver_m = measurementService.getAverageMeasurementForLast24Hours();
-        Assert.assertEquals(average_t, aver_m.getTemperature());
-        Assert.assertEquals(average_p, aver_m.getHumidity());
     }
-
 }
