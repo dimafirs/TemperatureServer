@@ -1,2 +1,4 @@
 *.tmp
 target/
+server/src/main/resources/static
+server/src/main/resources/git_version.txt
