@@ -5,7 +5,7 @@
 static const int  dht_pin = 4;
 static const char *wlan_ssid = "helloBitch";
 static const char *wlan_pass = "lieBitch";
-static const char *serv_enp = "http://192.168.1.127:8080/device/measurement/new";
+static const char *serv_enp = "http://weatherobserver.herokuapp.com/device/measurement/new";
 
 DHTesp sensor;
 
@@ -26,6 +26,7 @@ void loop() {
   content.concat(String((int) values.temperature));
   content.concat("&humidity=");
   content.concat(String((int) values.humidity));
+  content.concat("&header=c9bc6960efe4f");
   Serial.println(content);
   
   HTTPClient http;
