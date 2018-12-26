@@ -1,13 +1,12 @@
--- DROP SCHEMA IF EXISTS weather_observer;
--- DROP TABLE IF EXISTS weather_observer.measurement;
+DROP SCHEMA IF EXISTS weather_observer CASCADE;
+DROP TABLE IF EXISTS weather_observer.measurement CASCADE;
 
 CREATE SCHEMA IF NOT EXISTS weather_observer;
 
 CREATE TABLE IF NOT EXISTS weather_observer.measurement (
-   measurement_id INT NOT NULL AUTO_INCREMENT,
-   temperature INT NOT NULL,
-   humidity INT NOT NULL,
-   measurement_time TIMESTAMP NOT NULL,
-   PRIMARY KEY(measurement_id)
+   measurement_id serial PRIMARY KEY,
+   temperature SMALLINT NOT NULL,
+   humidity SMALLINT NOT NULL,
+   measurement_time TIMESTAMP NOT NULL
 );
 
