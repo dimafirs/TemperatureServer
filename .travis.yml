@@ -4,18 +4,30 @@ dist: trusty
 branches:
   only: master
 
-language: java
-jdk: oraclejdk8
-services: postgresql
-addons:
-  postgresql: "9.6"
-env:
-  global:
-  - PGPORT=5432
-script: mvn clean package
-before_script:
+matrix:
+  include:
+    - language: java
+      jdk: oraclejdk8
+      services: postgresql
+      addons:
+        postgresql: "9.6"
+      env:
+        global:
+        - PGPORT=5432
+      script:
+        - mvn clean package
+      before_script:
         - bash install.sh
         - psql -c "CREATE DATABASE testing_db;" -U postgres
         - psql -c "ALTER USER postgres WITH PASSWORD 'postgres';" -U postgres
         - cd ./server/
+
+    - language: node_js
+      node_js: stable
+      install:
+        - npm install
+      before_install:
+        - cd ./front/
+      script:
+        - npm run build
 
