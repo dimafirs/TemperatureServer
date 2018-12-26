@@ -35,11 +35,6 @@ public class MeasurementDaoImpl implements MeasurementDao {
         RowMapper<Measurement> rowMapper = new MeasurementRowMapper();
         final Measurement[] lastMeasurement = new Measurement[1];
         retryTemplate.execute(arg0 -> {
-            System.out.println("Get last measurement try");
-            boolean b = true;
-            if (b) {
-                throw new Exception();
-            }
             lastMeasurement[0] = jdbcTemplate.queryForObject(query, rowMapper);
             return null;
         });
