@@ -53,8 +53,8 @@ public class MeasurementServiceImpl implements MeasurementService {
             temperatureSum += measurement.getTemperature();
             humiditySum += measurement.getHumidity();
         }
-        int temperatureAverage = temperatureSum / measurements.size();
-        int humidityAverage = humiditySum / measurements.size();
+        int temperatureAverage = (int) Math.round((double)temperatureSum / measurements.size());
+        int humidityAverage = (int) Math.round((double)humiditySum / measurements.size());
         Measurement measurement = new Measurement();
         measurement.setTemperature(temperatureAverage);
         measurement.setHumidity(humidityAverage);
