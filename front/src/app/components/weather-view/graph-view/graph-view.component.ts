@@ -28,8 +28,8 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @select(['measurements', 'lastMeasurement'])
   lastMeasurement$: Observable<Measurement>;
   durations = DURATIONS;
-  chartTemperatureData: [];
-  chartHumidityData: [];
+  chartTemperatureData = [];
+  chartHumidityData = [];
 
   private temperatureChart: Chart;
   private humidityChart: Chart;
@@ -40,19 +40,19 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.measurements$.subscribe(measurements => {
-      this.measurements = measurements;
+      this.measurements = measurements.map(x => Object.assign({}, x ));
       this.chartTemperatureData = [];
       this.chartHumidityData = [];
-      measurements
+      this.measurements
         .sort((a, b) => a.measurementTime > b.measurementTime ? 1 : a.measurementTime < b.measurementTime ? -1 : 0)
         .forEach(measurement => {
           this.chartTemperatureData.push({
-            x: measurement.measurementTime,
-            y: measurement.temperature
+            x: String(measurement.measurementTime),
+            y: String(measurement.temperature)
           });
           this.chartHumidityData.push({
-            x: measurement.measurementTime,
-            y: measurement.humidity
+            x: String(measurement.measurementTime),
+            y: String(measurement.humidity)
           });
         });
       if (this.temperatureChart) {
@@ -78,8 +78,8 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.zone.runOutsideAngular(() => {
-      this.temperatureChart = {};
-      this.humidityChart = {};
+      this.temperatureChart.destroy();
+      this.humidityChart.destroy();
 
     });
     if (this.measurementsSubscription) {
@@ -132,7 +132,7 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
             {
               data: this.chartHumidityData,
               borderColor: '#1aa1ba',
-              fill: false
+              fill: false,
               label: 'Humidity'
             }
           ]

@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://weatherobserver.herokuapp.com",
+    "target": "localhost:8080",
     "secure": false,
     "changeOrigin": true
   }
