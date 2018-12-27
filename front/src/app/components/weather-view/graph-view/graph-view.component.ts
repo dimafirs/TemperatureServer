@@ -1,14 +1,13 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {Duration, DURATIONS} from '../../../model/duration';
 import * as am4core from '@amcharts/amcharts4/core';
-import * as am4charts from '@amcharts/amcharts4/charts';
-import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import am4themes_dark from '@amcharts/amcharts4/themes/dark';
 import {NgRedux, select} from '@angular-redux/store';
 import {Measurement} from '../../../model/Measurement';
 import {Observable, Subscription} from 'rxjs';
 import {changeDurationThunk} from '../../../store/actions/current-view.actions';
 import {AppState} from '../../../store';
+import {Chart} from 'chart.js';
 
 am4core.useTheme(am4themes_dark);
 
@@ -29,11 +28,11 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @select(['measurements', 'lastMeasurement'])
   lastMeasurement$: Observable<Measurement>;
   durations = DURATIONS;
-  chartTemperatureData: { time: Date, temperature: number }[] = [];
-  chartHumidityData: { time: Date, humidity: number }[] = [];
+  chartTemperatureData: [];
+  chartHumidityData: [];
 
-  private temperatureChart: am4charts.XYChart;
-  private humidityChart: am4charts.XYChart;
+  private temperatureChart: Chart;
+  private humidityChart: Chart;
 
   constructor(private zone: NgZone,
               private ngRedux: NgRedux<AppState>) {
@@ -44,22 +43,31 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.measurements = measurements;
       this.chartTemperatureData = [];
       this.chartHumidityData = [];
-      measurements.forEach(measurement => {
-        this.chartTemperatureData.push({
-          time: measurement.measurementTime,
-          temperature: measurement.temperature
+      measurements
+        .sort((a, b) => a.measurementTime > b.measurementTime ? 1 : a.measurementTime < b.measurementTime ? -1 : 0)
+        .forEach(measurement => {
+          this.chartTemperatureData.push({
+            x: measurement.measurementTime,
+            y: measurement.temperature
+          });
+          this.chartHumidityData.push({
+            x: measurement.measurementTime,
+            y: measurement.humidity
+          });
         });
-        this.chartHumidityData.push({
-          time: measurement.measurementTime,
-          humidity: measurement.humidity
-        });
-      });
       if (this.temperatureChart) {
-        this.temperatureChart.data = this.chartTemperatureData;
+        this.temperatureChart.data.datasets.forEach((dataset) => {
+          dataset.data = this.chartTemperatureData;
+        });
+        this.temperatureChart.update();
       }
       if (this.humidityChart) {
-        this.humidityChart.data = this.chartHumidityData;
+        this.humidityChart.data.datasets.forEach((dataset) => {
+          dataset.data = this.chartHumidityData;
+        });
+        this.humidityChart.update();
       }
+      console.log(this.chartHumidityData);
     });
   }
 
@@ -70,9 +78,9 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.zone.runOutsideAngular(() => {
-      if (this.temperatureChart) {
-        this.temperatureChart.dispose();
-      }
+      this.temperatureChart = {};
+      this.humidityChart = {};
+
     });
     if (this.measurementsSubscription) {
       this.measurementsSubscription.unsubscribe();
@@ -85,75 +93,65 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   createTemperatureChart(): void {
     this.zone.runOutsideAngular(() => {
-      let chart = am4core.create('chart-temperature-div', am4charts.XYChart);
-
-      chart.data = this.chartTemperatureData;
-
-// Create axes
-      let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-      dateAxis.renderer.minGridDistance = 100;
-      // dateAxis.baseInterval = {timeUnit: 'hour', count: 1};
-      dateAxis.baseInterval = {timeUnit: 'minute', count: 1};
-      dateAxis.dateFormats.setKey('day', 'dd/MM');
-      dateAxis.dateFormats.setKey('hour', 'HH:mm \n dd/MM');
-      dateAxis.title.text = 'Date';
-
-      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-      valueAxis.title.text = 'Temperature';
-// Create series
-      let series = chart.series.push(new am4charts.LineSeries());
-      series.dataFields.valueY = 'temperature';
-      series.dataFields.dateX = 'time';
-      series.tooltipText = '{temperature}';
-
-      series.tooltip.pointerOrientation = 'vertical';
-
-      chart.cursor = new am4charts.XYCursor();
-
-//chart.scrollbarY = new am4core.Scrollbar();
-      chart.scrollbarX = new am4core.Scrollbar();
-
-
-      this.temperatureChart = chart;
+      this.temperatureChart = new Chart('temperature', {
+        type: 'line',
+        data: {
+          datasets: [
+            {
+              data: this.chartTemperatureData,
+              borderColor: '#ba0e11',
+              fill: false,
+              label: 'Temperature'
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              type: 'time',
+              distribution: 'linear',
+              time: {
+                // unit: 'second'
+                displayFormats: {
+                  quarter: 'HH:mm'
+                }
+              }
+            }]
+          }
+        }
+      });
     });
   }
 
   createHumidityChart(): void {
     this.zone.runOutsideAngular(() => {
-      let chart = am4core.create('chart-humidity-div', am4charts.XYChart);
-
-      chart.data = this.chartHumidityData;
-
-// Create axes
-      let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-      dateAxis.renderer.minGridDistance = 100;
-      dateAxis.baseInterval = {timeUnit: 'minute', count: 1};
-      // dateAxis.dateFormatter = new am4core.DateFormatter();
-      dateAxis.dateFormats.setKey('day', 'dd/MM');
-      dateAxis.dateFormats.setKey('hour', 'HH:mm \n dd/MM');
-      dateAxis.title.text = 'Date';
-
-      // dateAxis.dateFormats.setKey('hour', 'dd-MM HH:mm');
-      // dateAxis.dateFormats.setKey('minute', 'MM-dd HH:mm');
-      // dateAxis.dateFormats.setKey('second', 'MM-dd HH:mm');
-      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-      valueAxis.title.text = 'Humidity';
-// Create series
-      let series = chart.series.push(new am4charts.LineSeries());
-      series.dataFields.valueY = 'humidity';
-      series.dataFields.dateX = 'time';
-      series.tooltipText = '{humidity}';
-
-      series.tooltip.pointerOrientation = 'vertical';
-
-      chart.cursor = new am4charts.XYCursor();
-
-//chart.scrollbarY = new am4core.Scrollbar();
-      chart.scrollbarX = new am4core.Scrollbar();
-
-
-      this.humidityChart = chart;
+      this.humidityChart = new Chart('humidity', {
+        type: 'line',
+        data: {
+          datasets: [
+            {
+              data: this.chartHumidityData,
+              borderColor: '#1aa1ba',
+              fill: false
+              label: 'Humidity'
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              type: 'time',
+              distribution: 'linear',
+              time: {
+                // unit: 'second'
+                displayFormats: {
+                  quarter: 'HH:mm'
+                }
+              }
+            }]
+          }
+        }
+      });
     });
   }
-
 }
