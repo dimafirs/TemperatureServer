@@ -9,9 +9,10 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {GraphViewComponent} from './graph-view/graph-view.component';
 import { MatSortModule } from '@angular/material';
+import { GraphAlternativeComponent } from './graph-alternative/graph-alternative.component';
 
 @NgModule({
-  declarations: [WeatherViewComponent, TableViewComponent, GraphViewComponent],
+  declarations: [WeatherViewComponent, TableViewComponent, GraphViewComponent, GraphAlternativeComponent],
   imports: [
     CommonModule,
     WeatherRouting,

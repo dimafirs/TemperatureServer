@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import { AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {Duration, DURATIONS} from '../../../model/duration';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
@@ -29,11 +29,11 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @select(['measurements', 'lastMeasurement'])
   lastMeasurement$: Observable<Measurement>;
   durations = DURATIONS;
-  chartTemperatureData: { time: Date, temperature: number }[] = [];
-  chartHumidityData: { time: Date, humidity: number }[] = [];
+  chartTemperatureData: { x: Date, y: number }[] = [];
+  chartHumidityData: { x: Date, y: number }[] = [];
 
-  private temperatureChart: am4charts.XYChart;
-  private humidityChart: am4charts.XYChart;
+  @ViewChild('temperatureChart')
+  temperatureChart;
 
   constructor(private zone: NgZone,
               private ngRedux: NgRedux<AppState>) {
@@ -46,20 +46,20 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.chartHumidityData = [];
       measurements.forEach(measurement => {
         this.chartTemperatureData.push({
-          time: measurement.measurementTime,
-          temperature: measurement.temperature
+          x: measurement.measurementTime,
+          y: measurement.temperature
         });
         this.chartHumidityData.push({
-          time: measurement.measurementTime,
-          humidity: measurement.humidity
+          x: measurement.measurementTime,
+          y: measurement.humidity
         });
       });
-      if (this.temperatureChart) {
-        this.temperatureChart.data = this.chartTemperatureData;
-      }
-      if (this.humidityChart) {
-        this.humidityChart.data = this.chartHumidityData;
-      }
+      // if (this.temperatureChart) {
+      //   this.temperatureChart.data = this.chartTemperatureData;
+      // }
+      // if (this.humidityChart) {
+      //   this.humidityChart.data = this.chartHumidityData;
+      // }
     });
   }
 
@@ -93,7 +93,7 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
       let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
       dateAxis.renderer.minGridDistance = 100;
       // dateAxis.baseInterval = {timeUnit: 'hour', count: 1};
-      dateAxis.baseInterval = {timeUnit: 'minute', count: 1};
+      dateAxis.baseInterval = {timeUnit: 'second', count: 1};
       dateAxis.dateFormats.setKey('day', 'dd/MM');
       dateAxis.dateFormats.setKey('hour', 'HH:mm \n dd/MM');
       dateAxis.title.text = 'Date';
@@ -126,8 +126,8 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
 // Create axes
       let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-      dateAxis.renderer.minGridDistance = 100;
-      dateAxis.baseInterval = {timeUnit: 'minute', count: 1};
+      dateAxis.renderer.minGridDistance = 60;
+      dateAxis.baseInterval = {timeUnit: 'second', count: 1};
       // dateAxis.dateFormatter = new am4core.DateFormatter();
       dateAxis.dateFormats.setKey('day', 'dd/MM');
       dateAxis.dateFormats.setKey('hour', 'HH:mm \n dd/MM');
@@ -152,7 +152,7 @@ export class GraphViewComponent implements OnInit, AfterViewInit, OnDestroy {
       chart.scrollbarX = new am4core.Scrollbar();
 
 
-      this.humidityChart = chart;
+      // this.humidityChart = chart;
     });
   }
 

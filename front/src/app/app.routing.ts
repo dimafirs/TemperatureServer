@@ -4,11 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 export const ROUTES: Routes = [
   {
     path: '',
-    redirectTo: '/weather',
-    pathMatch: 'full'
-  },
-  {
-    path: 'weather',
+  //   redirectTo: '/weather',
+    //   //   pathMatch: 'full'
+    //   // },
+    //   // {
+    //   //   path: 'weather',
     loadChildren: './components/weather-view/weather-view.module#WeatherViewModule'
   }
 ];

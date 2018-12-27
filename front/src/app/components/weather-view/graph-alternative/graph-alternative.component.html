@@ -1,0 +1,27 @@
+<div class="graphs">
+  <div class="graphs__header">
+    <mat-form-field>
+      <mat-select placeholder="Duration:" (selectionChange)="onSelectionChange($event)" [value]="duration$ | async">
+        <mat-option *ngFor="let duration of durations" [value]="duration">
+          {{duration.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="average-current-wrapper">
+      <p class="mat-h2 mat-title">Day Average:
+        <span class="mat-h2 mat-title">{{(averageMeasurement$ | async)?.temperature}}°C {{(averageMeasurement$ | async)?.humidity}}%</span>
+      </p>
+      <p class="mat-h2 mat-title">Last Measurement:
+        <span class="mat-h2 mat-title">{{(lastMeasurement$ | async)?.temperature}}°C  {{(lastMeasurement$ | async)?.humidity}}%</span>
+      </p>
+    </div>
+  </div>
+  <div class="graphs__body mat-app-background">
+    <div class="graph-wrapper temperature-graph">
+      <canvas id="temperatureChart" width="400" height="400" #temperatureChart></canvas>
+    </div>
+    <div class="graph-wrapper humidity-graph">
+      <canvas id="humidityChart" width="400" height="400" #humidityChart></canvas>
+    </div>
+  </div>
+</div>
