@@ -3,8 +3,10 @@
 Minimal software requirments is: <br>
 1. JDK 8.0_191; <br>
 2. Maven 3.60+; <br>
-3. MySQL 8.0.13; <br>
+3. Postgresql 10; <br>
 4. Docker 17.05.0-ce, build 89658be <br>
+5. Npm 6.4.1+; <br>
+6. Node.js 10.13.0+. <br>
 
 ## Front run
 > npm install -g @angular/cli (install globally angular command-line interface) <br>
@@ -35,5 +37,5 @@ To check board logs use "Serial monitor" (Ctrl+Shift+M in Arduino IDE).<br>
 Run commands below:
 > cd ./server <br>
  > sudo docker build -f docker/Dockerfile . -t weatherobserver <br>
- > sudo docker run --name mysql --network host -e MYSQL_ROOT_PASSWORD=root -d mysql <br>
+ > sudo docker run --name postgres --network host -e POSTGRES_PASSWORD=postgres -d postgres <br>
  > sudo docker run --network host weatherobserver <br>
