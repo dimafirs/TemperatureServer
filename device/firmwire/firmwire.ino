@@ -32,13 +32,20 @@ void loop() {
   HTTPClient http;
   http.begin(serv_enp);
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-  while(200 != http.POST(content)){
-    delay(3000);
+  int i = 1, attempt = 2;
+  while(200 != http.POST(content) && attempt<6){
+    Serial.printf("Retry to send HTTP POST for the %d time...%c\n", attempt, 13);
+    delay(i*10000);
+    i*=2;
+    attempt++;
   }
-  http.end();
-  
   String payload = http.getString();
-  Serial.println("Payload - " + payload);
+  http.end();
+  if(payload.length() != 0){
+    Serial.println("HTTP Payload - " + payload);
+  } else {
+    Serial.println("Server not responding!");
+  }
 
   //It's totally wrongway to wait 10 mins, but I don't want to use power-saving modes
   delay(600000);
